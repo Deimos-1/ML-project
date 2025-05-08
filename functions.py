@@ -61,8 +61,7 @@ def KNN(K: int, Sensor_ID: str, data_no_nan: pd.DataFrame, coords: pd.DataFrame)
     
     return  1/K * np.sum(values, axis = 1) # return the average
 
-
-def fill_NaN_columns(K: int, df: pd.DataFrame, data_no_nan: pd.DataFrame, coords: pd.DataFrame) -> pd.DataFrame:
+def fill_NaN_columns(K: int, df: pd.DataFrame, imputer , coords: pd.DataFrame) -> pd.DataFrame:
     """
     Fills empty columns with the values of the average of the K geometrically closest sensors in the DataFrame.
 
@@ -76,13 +75,14 @@ def fill_NaN_columns(K: int, df: pd.DataFrame, data_no_nan: pd.DataFrame, coords
     Returns:
         Filled DataFrame
     """
+    data_no_nan = imputer.fit_transform(df)
 
     for index, sensor in enumerate(df.columns[1:]): 
         if df[sensor].isnull().all():
             df[sensor] = KNN(
                 K = K,
                 Sensor_ID = sensor,
-                data_no_nan= data_no_nan, 
+                data_no_nan = data_no_nan, 
                 coords = coords
             )
 
