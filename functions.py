@@ -87,3 +87,7 @@ def fill_NaN_columns(K: int, df: pd.DataFrame, imputer , coords: pd.DataFrame) -
             )
 
     return df
+
+def get_batch_indices(n_samples, batch_size):
+    """Get a list of tuples for each batch."""
+    return [(i, min(i + batch_size, n_samples)) for i in range(0, n_samples, batch_size)]

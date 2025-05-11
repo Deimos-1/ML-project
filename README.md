@@ -22,13 +22,36 @@ The goal of this project is to predict the temperature in time around a nuclear 
 
 ## Progression of the project
 
-1) Preparing the data  
-   We started by extracting features from the data and to handle outliers. The extracted features can be found in the notebook with justifications. To handle the outliers we decided to look at the data distribution and delete values above/below a certain threshold visually determined. After this, to avoid deleting too many samples of data, we implemented two KNN imputers: 
-    
-    1) The first one imputing values for sensors with no values at all:
-    It uses the average of the 5 spatially closest neighbors. 
+1)  Data preprocessing:  
 
-    2) The second (...)
+    1) Feature selection: we only got rid of the index column which was useless. We then 1-hot encoded material (categorical feature) to have a suitable representation for the model.  
+    Our final features are {pressure, humidity, x, y, z, r, materials [1-hot], time [d]}.  
+
+    2) Handling outliers:. To handle the outliers we decided to look at the data distribution and delete values above/below a certain threshold visually determined. After this, to avoid deleting too many samples of data, we implemented two KNN imputers: 
+    
+       * The first one imputing values for sensors with no values at all:
+         It uses the average of the 5 spatially closest neighbors. 
+
+       * The second one imputing sensors with partially missing values:  
+         At a specific time, it takes the average between the next and prior time with data. We think that taking the average between two sensors will preserve the time patterns more.  
+
+        We then applied low and high filters to cut data that is too distant from the center of the distribution, this was done visually with values that seemed good. We also noticed that there was a distribution mismatch between the pressure validation/training datasets: different mean and variance which can make poor submissions as the model would have seen more different datas. We would try to adress that later.
+
+    3) Data normalization: For the weights to be accordingly punished and the learning to converge faster we used a z-score scaling on our data. It was not optimal as the data was not following a normal distribution (it was more like a spike with long tails) but we thought it was better than a min-max scaling or a log scaling, which would have been more complicated to implement as we have negative data, but could have helped reduce the length of the tails in the data distribution.  
+
+
+2)  Choosing the model:  
+    We decided to go for a neural network as we thought it would be more suited to learn the complicated distribution of heat.  
+
+    We also did some testing on a KNN (unsupervised) model, which performed well (scored 92.6 on Kaggle) with 5 neighbors. But we were not satisfied as unsupervised models required to make submissions to learn and submissions were limitted to 15/day. It would also learn patterns specifically related to this dataset and maybe not generalize to totally new data, for example times beyond 10'000. With a neural network we would hopefully not have that first problem as we could rely on the validation/test loss.  
+
+    For the architecture, we initially set a 2 hidden-layers NN with LeakyReLU activation functions but it had bad performances. By having a 4 hidden-layers NN and slightly larger layers (~18 neurons), it improved, but not that much. Finally with a 4 hidden-layers net, with ReLU activation functions, a greater size ([14,80,30,1]) and some hyperparameter search we were able to have low losses: ~0.05 on the training set and ~0.13 on the validation set, which was 3 times better as our initial results.  
+
+
+
+
+## Some extra learning outcomes: 
+*   By trying to use GPUs we learned that GPUs did not compute forward passes faster but could compute it in parallel on a single batch. It was useful only with large enough batch sizes.
 
 
 ## Hyperparameter search
@@ -48,11 +71,11 @@ The goal of this project is to predict the temperature in time around a nuclear 
 
 ## To Do: 
 
-⬜ Augment the data w.r.t time as high values are under-represented in the dataset.  
+✅ Augment the data w.r.t time as high values are under-represented in the dataset.  
 ⬜ Making sure the model can overfitt small parts of dataset.   
 ✅ Choose reasonable thresholds for clipping.  
 ⬜ Use an L1 regularization to see if some features are useless (1st layer of weights).   
-⬜ Use batchnorm between fully connected layers and activation functions.   
+✅ Use batchnorm between fully connected layers and activation functions.   
 ✅ Implement both KNN algorithms.  
 ✅ Search for a good weight_decay.  
 ⬜ Optimize the Neural Net's architecture.  
@@ -61,3 +84,5 @@ The goal of this project is to predict the temperature in time around a nuclear 
 ✅ Search for a good learning rate.  
 ✅ Implement cross-validation.  
 ⬜ Test bigger batch sizes.
+⬜ See if the results improve when not touching the prediction set.
+⬜ Find a solution for pressure_train and pressure_pred being very different. 
