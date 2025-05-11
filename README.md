@@ -60,3 +60,4 @@ The goal of this project is to predict the temperature in time around a nuclear 
 ⬜ Search for the best number of neighbors in the KNN.  
 ✅ Search for a good learning rate.  
 ✅ Implement cross-validation.  
+⬜ Test bigger batch sizes.
