@@ -47,7 +47,8 @@ The goal of this project is to predict the temperature in time around a nuclear 
 
     For the architecture, we initially set a 2 hidden-layers NN with LeakyReLU activation functions but it had bad performances. By having a 4 hidden-layers NN and slightly larger layers (~18 neurons), it improved, but not that much. Finally with a 4 hidden-layers net, with ReLU activation functions, a greater size ([14,80,30,1]) and some hyperparameter search we were able to have low losses: ~0.05 on the training set and ~0.13 on the validation set, which was 3 times better as our initial results.  
 
-
+3)  Training:  
+    With our relatively small dataset we decided to implement a cross validation. We noticed that the validation loss was varying a lot between each execution of the notebook. With a 3-fold cross-validation we could have a more precise view on the validation loss for our hyperparameter search. 
 
 
 ## Some extra learning outcomes: 
@@ -58,31 +59,39 @@ The goal of this project is to predict the temperature in time around a nuclear 
 
 | Architecture | Activation | weight_decay | dropout | val. loss |
 |--------------|------------|--------------|---------|-----------|
-| [13,18,8,1]  | LReLU(0.1) | 1e-2         | 0.1     | 0.31      |
-| [13,18,13,1] | LReLU(0.1) | 1e-2         | 0.0     | 0.30      |
-| [13,18,13,1] | LReLU(0.1) | 5e-3         | 0.0     | 0.23      |          
-| [13,18,13,1] | LReLU(0.1) | 2e-3         | 0.0     | 0.21      |
-| [13,18,13,1] | LReLU(0.1) | 1e-3         | 0.0     | 0.22      |
-| [13,18,13,1] | LReLU(0.1) | 8e-4         | 0.0     | 0.27      |
-| [13,18,13,1] | LReLU(0.1) | 7e-4         | 0.0     | 0.33      |
-| [13,18,13,1] | LReLU(0.1) | 5e-5         | 0.0     | 0.20      |
-| [13,18,13,1] | LReLU(0.1) | 3e-4         | 0.0     | 0.41      |
-| [13,18,13,1] | LReLU(0.1) | 1e-4         | 0.0     | 0.24      |
+| [14,18,8,1]  | LReLU(0.1) | 1e-2         | 0.1     | 0.31      |
+| [14,18,13,1] | LReLU(0.1) | 1e-2         | 0.0     | 0.30      |
+| [14,18,13,1] | LReLU(0.1) | 5e-3         | 0.0     | 0.23      |
+| [14,18,13,1] | LReLU(0.1) | 2e-3         | 0.0     | 0.21      |
+| [14,18,13,1] | LReLU(0.1) | 1e-3         | 0.0     | 0.22      |
+| [14,18,13,1] | LReLU(0.1) | 8e-4         | 0.0     | 0.27      |
+| [14,18,13,1] | LReLU(0.1) | 7e-4         | 0.0     | 0.33      |
+| [14,18,13,1] | LReLU(0.1) | 5e-5         | 0.0     | 0.20 (pb) |
+| [14,18,13,1] | LReLU(0.1) | 3e-4         | 0.0     | 0.41      |
+| [14,18,13,1] | LReLU(0.1) | 1e-4         | 0.0     | 0.24      |
+| [14,100,50,1]| ReLU       | 2e-4         | 0.0     | 0.14      |
+| [14,80,30,1] | ReLU       | 2e-4         | 0.0     | 0.15      | (more stable)
+
+
+Dropout in the range [0,30%] did not have any effect on small networks. 
 
 ## To Do: 
 
 ✅ Augment the data w.r.t time as high values are under-represented in the dataset.  
-⬜ Making sure the model can overfitt small parts of dataset.   
+⬜ Making sure the model can overfitt small parts of dataset. (I can't make the code for it...)   
 ✅ Choose reasonable thresholds for clipping.  
 ⬜ Use an L1 regularization to see if some features are useless (1st layer of weights).   
 ✅ Use batchnorm between fully connected layers and activation functions.   
 ✅ Implement both KNN algorithms.  
 ✅ Search for a good weight_decay.  
 ⬜ Optimize the Neural Net's architecture.  
-✅ Look for dropout.  (not improving results currently...)  
-⬜ Search for the best number of neighbors in the KNN.  
+⬜ Look for dropout (again as the network size changed).  
+⬜ Search for the best number of neighbors in the KNN (not very useful I think).  
 ✅ Search for a good learning rate.  
 ✅ Implement cross-validation.  
-⬜ Test bigger batch sizes.
+✅ Test bigger batch sizes (does well with 10).
 ⬜ See if the results improve when not touching the prediction set.
 ⬜ Find a solution for pressure_train and pressure_pred being very different. 
+⬜ Type of regularization. (maybe not important ?)  
+✅ Find a good learning rate.   
+⬜ Hyperparameter search in log scale. (???)  
