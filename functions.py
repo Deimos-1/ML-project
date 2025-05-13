@@ -22,7 +22,7 @@ def KNN(K: int, Sensor_ID: str, data_no_nan: pd.DataFrame, coords: pd.DataFrame)
     """
 
     ## making a disctionnary to easily change from sensor names to indices
-    sensor_dic = {i:j for i,j in enumerate(coords["id"])}
+    sensor_dic = {coords.index[coords["id"] == i][0] :i for i in coords["id"]}
     ## Selecting the row of the sensor we impute
     ## Caution: the columns have to be already renamed for "id" to be found !
     point = coords[coords["id"] == Sensor_ID]

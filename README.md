@@ -33,7 +33,9 @@ The goal of this project is to predict the temperature in time around a nuclear 
          It uses the average of the 5 spatially closest neighbors. 
 
        * The second one imputing sensors with partially missing values:  
-         At a specific time, it takes the average between the next and prior time with data. We think that taking the average between two sensors will preserve the time patterns more.  
+         At a specific time, it takes the average between the next and prior time with data. We think that taking the average between two sensors will preserve the time patterns more. 
+
+         We later replaced this method by the linear interpolation method of the pandas library as it was mork suited to our time dependant evolution. It is slower to run but shows slightly better, and more coherent results.  
 
         We then applied low and high filters to cut data that is too distant from the center of the distribution, this was done visually with values that seemed good. We also noticed that there was a distribution mismatch between the pressure validation/training datasets: different mean and variance which can make poor submissions as the model would have seen more different datas. We would try to adress that later.
 
@@ -49,6 +51,19 @@ The goal of this project is to predict the temperature in time around a nuclear 
 
 3)  Training:  
     With our relatively small dataset we decided to implement a cross validation. We noticed that the validation loss was varying a lot between each execution of the notebook. With a 3-fold cross-validation we could have a more precise view on the validation loss for our hyperparameter search. 
+
+4)  Addressing the distribution mismatch:  
+    When training our model, we noticed good performance on the trainning and validation set but when using our model for a prediction it gives poor results. We though that our training data under represented what the model would face in the prediction set so we wanted to fix that. We tried data augmentation so the high values of time would be more represented, but it accentuated the issue. We then tried removing 50% of the over-reprensented pressure values and their corresponding sensors. No success either. 
+
+    Disabling both of those two things, scaling down the architecture to [14,20,20,1], with a dropout of 40% and relaxing the clipping values in the outliers handling (0 pressure, 100 temperature), we get back to reasonable scores of 120.  
+
+    If re-enabling data augmentation, we score 70 and 120... There is a high variance between each iteration. It might mean that in the 7 out of 8 fold the model is trained on, there are some important data missing
+
+    If we do more data augmentation (x2), we would replicate useful data and hopefuly minimize the noise even more. And increase the batch size to 10 (so it's faster), we get a worse score of 160. We can deduce that the data augmentation reiforced the noise instead of minimizing it. 
+
+    I tried clipping pressure values below -1000 
+
+
 
 
 ## Some extra learning outcomes: 
@@ -78,7 +93,7 @@ Dropout in the range [0,30%] did not have any effect on small networks.
 ## To Do: 
 
 ✅ Augment the data w.r.t time as high values are under-represented in the dataset.  
-⬜ Making sure the model can overfitt small parts of dataset. (I can't make the code for it...)   
+✅ Making sure the model can overfitt small parts of dataset. 
 ✅ Choose reasonable thresholds for clipping.  
 ⬜ Use an L1 regularization to see if some features are useless (1st layer of weights).   
 ✅ Use batchnorm between fully connected layers and activation functions.   
@@ -90,5 +105,16 @@ Dropout in the range [0,30%] did not have any effect on small networks.
 ✅ Search for a good learning rate.  
 ✅ Implement cross-validation.  
 ✅ Test bigger batch sizes (does well with 10).
+<<<<<<< Updated upstream
 ⬜ See if the results improve when not touching the prediction set.
 ⬜ Find a solution for pressure_train and pressure_pred being very different. 
+=======
+✅ See if the results improve when not touching the prediction set. (NO)
+⬜ Find a solution for pressure_train and pressure_pred being very different. 
+⬜ Type of regularization. (maybe not important ?)  
+✅ Find a good learning rate.   
+⬜ Hyperparameter search in log scale. (???)  
+✅ Impute with pandas linear method instead of 2-NN (doesnt work well as it doesnt know what to do on edges)  
+⬜ Log scaling data  
+⬜ Make the initial data into only one array instead of doing a dictionnary with time keys.  
+>>>>>>> Stashed changes
