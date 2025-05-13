@@ -86,3 +86,4 @@ The goal of this project is to predict the temperature in time around a nuclear 
 ⬜ Test bigger batch sizes.
 ⬜ See if the results improve when not touching the prediction set.
 ⬜ Find a solution for pressure_train and pressure_pred being very different. 
+⬜ Implement weight initialization (Kaiming because we have leaky_relu activation)
