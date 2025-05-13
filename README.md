@@ -105,16 +105,12 @@ Dropout in the range [0,30%] did not have any effect on small networks.
 ✅ Search for a good learning rate.  
 ✅ Implement cross-validation.  
 ✅ Test bigger batch sizes (does well with 10).
-<<<<<<< Updated upstream
-⬜ See if the results improve when not touching the prediction set.
-⬜ Find a solution for pressure_train and pressure_pred being very different. 
-=======
 ✅ See if the results improve when not touching the prediction set. (NO)
 ⬜ Find a solution for pressure_train and pressure_pred being very different. 
+⬜ Implement weight initialization (Kaiming because we have leaky_relu activation)
 ⬜ Type of regularization. (maybe not important ?)  
 ✅ Find a good learning rate.   
 ⬜ Hyperparameter search in log scale. (???)  
 ✅ Impute with pandas linear method instead of 2-NN (doesnt work well as it doesnt know what to do on edges)  
 ⬜ Log scaling data  
 ⬜ Make the initial data into only one array instead of doing a dictionnary with time keys.  
->>>>>>> Stashed changes
