@@ -1,5 +1,6 @@
 # Source: https://github.com/dmizr/phuber/blob/master/phuber/metrics.py
 import torch
+import numpy as np
 
 class LossMetric:
     """Keeps track of the loss over an epoch"""
@@ -10,9 +11,11 @@ class LossMetric:
 
     def update(self, loss: float, batch_size: int) -> None:
         self.running_loss += loss * batch_size
+        assert not np.isnan(self.running_loss), f"running_loss={self.running_loss}, batch_size={batch_size}"
         self.count += batch_size
 
     def compute(self) -> float:
+        assert not np.isnan(self.running_loss / self.count), f"running_loss={self.running_loss}, count={self.count}"
         return self.running_loss / self.count
 
     def reset(self) -> None:

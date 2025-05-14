@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 
+## This definition of the MSE is bad for large arrays...
 def MSE(pred: np.ndarray, y: np.ndarray) -> float: 
     assert len(pred) == len(y)
     return (1/len(y)) * ((pred - y).T @ (pred - y))
@@ -21,7 +22,7 @@ def KNN(K: int, Sensor_ID: str, data_no_nan: pd.DataFrame, coords: pd.DataFrame)
         A column with the average values from the K geometrically closest sensors
     """
 
-    ## making a disctionnary to easily change from sensor names to indices
+    ## making a dictionnary to easily change from sensor names to indices
     sensor_dic = {coords.index[coords["id"] == i][0] :i for i in coords["id"]}
     ## Selecting the row of the sensor we impute
     ## Caution: the columns have to be already renamed for "id" to be found !
