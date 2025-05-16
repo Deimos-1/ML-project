@@ -61,8 +61,13 @@ The goal of this project is to predict the temperature in time around a nuclear 
 
     If we do more data augmentation (x2), we would replicate useful data and hopefuly minimize the noise even more. And increase the batch size to 10 (so it's faster), we get a worse score of 160. We can deduce that the data augmentation reiforced the noise instead of minimizing it. 
 
-    I tried clipping pressure values below -1000 
+groupin the data in a single array and shuffling the rows allowed us to reach scores in the 60-70 range, using a batch size of 30 and 25 epochs with medium data augmentation. With data augmentation, the scores were higher in the 90 range, showing that some higher time values are noisy.
+With no data augmentation  its worse, when isabling KNN and droping faulty sensors, we hit low loss but a score of 400. 
 
+
+## no shuffle
+## batch 32 (no of times) 
+## 
 
 
 
