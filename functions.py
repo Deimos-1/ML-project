@@ -169,13 +169,15 @@ def get_train_data(
     y = np.vstack([vector.reshape((vector.shape[0], 1)) for vector in y_t.values()])
     assert X.shape[0] == y.shape[0], "Mismatch in number of samples"
 
-    ## Shuffling the rows so the data is well-mixed
-    ## Else the model could have an unrepresentative timestamp in one epoch and mess the learning.
-    ## After some testing, it improves our results and make the model more stable.
-    ## First, generate a permutation of indices:
-    permutation = np.random.permutation(X.shape[0])
-    # Then shuffle both X and y using the same permutation, unfortunately we cannot impose a random_state on this method.
-    X = X[permutation]
-    y = y[permutation]
+    # ## Shuffling the rows so the data is well-mixed
+    # ## Else the model could have an unrepresentative timestamp in one epoch and mess the learning.
+    # ## After some testing, it improves our results and make the model more stable.
+    # ## First, generate a permutation of indices:
+    # permutation = np.random.permutation(X.shape[0])
+    # # Then shuffle both X and y using the same permutation, unfortunately we cannot impose a random_state on this method.
+    # X = X[permutation]
+    # y = y[permutation]
+
+    ## --- NO NEED TO SHUFFLE WHEN USING TRAIN_TEST_SPLIT ---
 
     return X, y

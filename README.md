@@ -64,13 +64,6 @@ The goal of this project is to predict the temperature in time around a nuclear 
 groupin the data in a single array and shuffling the rows allowed us to reach scores in the 60-70 range, using a batch size of 30 and 25 epochs with medium data augmentation. With data augmentation, the scores were higher in the 90 range, showing that some higher time values are noisy.
 With no data augmentation  its worse, when isabling KNN and droping faulty sensors, we hit low loss but a score of 400. 
 
-
-## no shuffle
-## batch 32 (no of times) 
-## 
-
-
-
 ## Some extra learning outcomes: 
 *   By trying to use GPUs we learned that GPUs did not compute forward passes faster but could compute it in parallel on a single batch. It was useful only with large enough batch sizes.
 
@@ -95,27 +88,38 @@ With no data augmentation  its worse, when isabling KNN and droping faulty senso
 
 Dropout in the range [0,30%] did not have any effect on small networks. 
 
+## SGboost: 
+We implemented an XGboost model that got us a score of 23.05 with the following parameters:  
+    n_estimators=500,  
+    learning_rate=0.1,  
+    max_depth=6,  
+    subsample=0.8,  
+    random_state=random_state  
+
+We used no data augmentation, clipped pressure at -1500 and temperature at 100 and trained on the full dataset. With medium data augmentation the score was 25.2  and with high data augmentation the score was 23.3. We decided to not use data augmentation then. 
+
 ## To Do: 
 
 ✅ Augment the data w.r.t time as high values are under-represented in the dataset.  
 ✅ Making sure the model can overfitt small parts of dataset. 
 ✅ Choose reasonable thresholds for clipping.  
-⬜ Use an L1 regularization to see if some features are useless (1st layer of weights).   
+❌ Use an L1 regularization to see if some features are useless (1st layer of weights).   
 ✅ Use batchnorm between fully connected layers and activation functions.   
 ✅ Implement both KNN algorithms.  
 ✅ Search for a good weight_decay.  
-⬜ Optimize the Neural Net's architecture.  
-⬜ Look for dropout (again as the network size changed).  
-⬜ Search for the best number of neighbors in the KNN (not very useful I think).  
+❌ Optimize the Neural Net's architecture.  
+❌ Look for dropout (again as the network size changed).  
+❌ Search for the best number of neighbors in the KNN (not very useful I think).  
 ✅ Search for a good learning rate.  
 ✅ Implement cross-validation.  
 ✅ Test bigger batch sizes (does well with 10).
 ✅ See if the results improve when not touching the prediction set. (NO)
-⬜ Find a solution for pressure_train and pressure_pred being very different. 
-⬜ Implement weight initialization (Kaiming because we have leaky_relu activation)
-⬜ Type of regularization. (maybe not important ?)  
+❌ Find a solution for pressure_train and pressure_pred being very different. 
+✅ Implement weight initialization (Kaiming because we have leaky_relu activation)
+❌ Type of regularization. (maybe not important ?)  
 ✅ Find a good learning rate.   
-⬜ Hyperparameter search in log scale. (???)  
+❌ Hyperparameter search in log scale. (???)  
 ✅ Impute with pandas linear method instead of 2-NN (doesnt work well as it doesnt know what to do on edges)  
 ⬜ Log scaling data  
-⬜ Make the initial data into only one array instead of doing a dictionnary with time keys.  
+✅ Make the initial data into only one array instead of doing a dictionnary with time keys.  
+⬜ Search for better clipping boundaries.
