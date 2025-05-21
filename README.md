@@ -65,7 +65,7 @@ We supposed there was a distribution mismatch between the validation and trainin
    
 <br />  
 
-![Figure 1](imgs\\pressure_train.png "Fig. 1") ![Figure 2](imgs\\pressure_pred.png "Fig. 2")
+![Figure 1](imgs/pressure_train.png "Fig. 1") ![Figure 2](imgs/pressure_pred.png "Fig. 2")
 
 
 ### 4.3. Normalization  
