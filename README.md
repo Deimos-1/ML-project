@@ -73,8 +73,8 @@ We supposed there was a distribution mismatch between the validation and trainin
 With a  min-max scaling, the axis would be too scaled up by the heavy tailed data and with a log scaling, it would have been more complicated as we have negative data, but it could have helped reduce the length of the tails in the data distribution.  
 
 ### 4.4. Architecture  
-For the architecture, we initially set a 2 hidden-layers NN with LeakyReLU activation functions but it had bad performances. By having a 4 hidden-layers neural network and slightly larger layers (~18 neurons), it improved, but not that much.  
-Finally with a 4 hidden-layers net, wider, with layer normalization and some hyperparameter search (dropout, learning_rate, L2 regularization strengh) we were able to have low losses: ~0.05 on the training set and ~0.13 on the validation set, which was 3 times better as our initial results.  
+For the architecture, we initially set a 2 hidden-layers NN with LeakyReLU activation functions but it had bad performances. By having a 3 hidden-layers neural network and slightly larger layers (~18 neurons), it improved, but not that much.  
+Finally with a 3 hidden-layers net, wider, with layer normalization and some hyperparameter search (dropout, learning_rate, L2 regularization strengh) we were able to have low losses: ~0.05 on the training set and ~0.13 on the validation set, which was 3 times better as our initial results.  
 
 *see `/other_models/neural_net_0516.ipynb` for more details*
 
