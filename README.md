@@ -28,6 +28,7 @@ conda activate <environment-name>
 * **functions.py**: Definition of some generic functions to make the notebooks more legible.  
 * **LICENSE**: An MIT License in case we make our code public.
 * **metrics.py**: Loss metric copied from the [exercises](https://github.com/vita-epfl/IntroML-2025/blob/main/exercises/07-convnets/metrics.py).  
+* **Predicting Temperature of Nuclear Waste Canisters.pdf**: Our poster  
 * **train.ipynb**: Final submission notebook.  
 * **XGboost\_RandomSearch.ipynb**: Randomized hyperparameter search for the XGboost model. 
 
